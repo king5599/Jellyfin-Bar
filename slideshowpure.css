@@ -148,6 +148,8 @@
   height: 90%;
   overflow: hidden;
   margin: 0 auto;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .arrow {
@@ -218,6 +220,11 @@
 .slide.active {
   opacity: 1;
   z-index: 1;
+  pointer-events: auto;
+}
+
+.arrow {
+  pointer-events: auto !important;
 }
 
 .backdrop-container {

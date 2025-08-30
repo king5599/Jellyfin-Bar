@@ -1154,10 +1154,29 @@ const SlideshowManager = {
       document.getElementById("slides-container").appendChild(dotsContainer);
     }
 
+    // 清空旧的dot，防止重复
+    dotsContainer.innerHTML = "";
+
     for (let i = 0; i < 5; i++) {
       const dot = document.createElement("span");
       dot.className = "dot";
       dot.setAttribute("data-index", i);
+      // 添加点击事件，点击dot切换到对应海报
+      dot.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // 计算目标slide索引
+        const totalItems = STATE.slideshow.totalItems;
+        const numDots = 5;
+        let targetIndex;
+        if (totalItems <= numDots) {
+          targetIndex = i;
+        } else {
+          // 均匀分布
+          targetIndex = Math.round(i * (totalItems - 1) / (numDots - 1));
+        }
+        SlideshowManager.updateCurrentSlide(targetIndex);
+      });
       dotsContainer.appendChild(dot);
     }
     this.updateDots();
