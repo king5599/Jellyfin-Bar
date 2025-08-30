@@ -156,7 +156,11 @@
 #slides-container .arrow,
 #slides-container .dots-container,
 #slides-container .dots-container .dot,
-#slides-container .slide.active {
+#slides-container .slide.active,
+#slides-container .button-container,
+#slides-container .detailButton,
+#slides-container .play-button,
+#slides-container .favorite-button {
   pointer-events: auto !important;
 }
 
@@ -173,7 +177,7 @@
   font-size: 12px;
   cursor: pointer;
   color: #fff;
-  z-index: 5;
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -205,7 +209,7 @@
   position: absolute;
   top: calc(50% + 18vh);
   right: 3%;
-  z-index: 5;
+  z-index: 1000;
   display: flex;
   justify-content: center;
   align-items: center;

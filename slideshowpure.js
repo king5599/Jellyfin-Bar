@@ -391,7 +391,8 @@ const SlideUtils = {
       } else if (key === "innerHTML") {
         element.innerHTML = value;
       } else if (key === "onclick" && typeof value === "function") {
-        element.addEventListener("click", value);
+        // 直接分配onclick属性，而不是使用addEventListener
+        element.onclick = value;
       } else {
         element.setAttribute(key, value);
       }
@@ -1027,18 +1028,25 @@ const SlideCreator = {
    * @returns {HTMLElement} Play button element
    */
   createPlayButton(itemId) {
-    return SlideUtils.createElement("button", {
+    const playButton = SlideUtils.createElement("button", {
       className: "detailButton btnPlay play-button",
       innerHTML: `
       <span class="play-text">Play</span>
     `,
-      tabIndex: "0",
-      onclick: (e) => {
+      tabIndex: "0"
+    });
+    
+    // 直接设置onclick函数属性
+    playButton.onclick = function(e) {
+      if (e) {
         e.preventDefault();
         e.stopPropagation();
-        ApiUtils.playItem(itemId);
-      },
-    });
+      }
+      console.log("播放按钮被点击:", itemId);
+      ApiUtils.playItem(itemId);
+    };
+    
+    return playButton;
   },
 
   /**
@@ -1047,21 +1055,28 @@ const SlideCreator = {
    * @returns {HTMLElement} Detail button element
    */
   createDetailButton(itemId) {
-    return SlideUtils.createElement("button", {
+    const detailButton = SlideUtils.createElement("button", {
       className: "detailButton detail-button",
-      tabIndex: "0",
-      onclick: (e) => {
+      tabIndex: "0"
+    });
+    
+    // 直接设置onclick函数属性
+    detailButton.onclick = function(e) {
+      if (e) {
         e.preventDefault();
         e.stopPropagation();
-        if (window.Emby && window.Emby.Page) {
-          Emby.Page.show(
-            `/details?id=${itemId}&serverId=${STATE.jellyfinData.serverId}`
-          );
-        } else {
-          window.location.href = `#/details?id=${itemId}&serverId=${STATE.jellyfinData.serverId}`;
-        }
-      },
-    });
+      }
+      console.log("详情按钮被点击:", itemId);
+      if (window.Emby && window.Emby.Page) {
+        Emby.Page.show(
+          `/details?id=${itemId}&serverId=${STATE.jellyfinData.serverId}`
+        );
+      } else {
+        window.location.href = `#/details?id=${itemId}&serverId=${STATE.jellyfinData.serverId}`;
+      }
+    };
+    
+    return detailButton;
   },
 
   /**
@@ -1075,13 +1090,18 @@ const SlideCreator = {
     
     const button = SlideUtils.createElement("button", {
       className: `favorite-button ${isFavorite ? "favorited" : ""}`,
-      tabIndex: "0",
-      onclick: async (e) => {
+      tabIndex: "0"
+    });
+    
+    // 直接设置onclick函数属性
+    button.onclick = async function(e) {
+      if (e) {
         e.preventDefault();
         e.stopPropagation();
-        await ApiUtils.toggleFavorite(item.Id, button);
-      },
-    });
+      }
+      console.log("收藏按钮被点击:", item.Id);
+      await ApiUtils.toggleFavorite(item.Id, button);
+    };
 
     return button;
   },
@@ -1161,24 +1181,30 @@ const SlideshowManager = {
       const dot = document.createElement("span");
       dot.className = "dot";
       dot.setAttribute("data-index", i);
-      // 添加点击事件，点击dot切换到对应海报
-      dot.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log(`圆点 ${i} 被点击`);
-        // 计算目标slide索引
-        const totalItems = STATE.slideshow.totalItems;
-        const numDots = 5;
-        let targetIndex;
-        if (totalItems <= numDots) {
-          targetIndex = i;
-        } else {
-          // 均匀分布
-          targetIndex = Math.round(i * (totalItems - 1) / (numDots - 1));
-        }
-        console.log(`切换到索引: ${targetIndex}`);
-        SlideshowManager.updateCurrentSlide(targetIndex);
-      });
+      
+      // 使用直接的onclick方法而不是addEventListener
+      dot.onclick = (function(index) {
+        return function(e) {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          console.log(`圆点 ${index} 被点击`);
+          // 计算目标slide索引
+          const totalItems = STATE.slideshow.totalItems;
+          const numDots = 5;
+          let targetIndex;
+          if (totalItems <= numDots) {
+            targetIndex = index;
+          } else {
+            // 均匀分布
+            targetIndex = Math.round(index * (totalItems - 1) / (numDots - 1));
+          }
+          console.log(`切换到索引: ${targetIndex}`);
+          SlideshowManager.updateCurrentSlide(targetIndex);
+        };
+      })(i);
+      
       dotsContainer.appendChild(dot);
     }
     this.updateDots();
@@ -1531,19 +1557,24 @@ const initArrowNavigation = () => {
   rightArrow.style.display = "block";
 
   // 使用传统事件绑定方式
-  leftArrow.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // 使用更直接的事件绑定方法
+  leftArrow.onclick = function(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     console.log("左箭头被点击");
     SlideshowManager.prevSlide();
-  });
+  };
 
-  rightArrow.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  rightArrow.onclick = function(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     console.log("右箭头被点击");
     SlideshowManager.nextSlide();
-  });
+  };
 
   container.appendChild(leftArrow);
   container.appendChild(rightArrow);
