@@ -1522,9 +1522,9 @@ const initArrowNavigation = () => {
       SlideshowManager.prevSlide();
     },
     style: {
-      opacity: "0",
+      opacity: "1",
       transition: "opacity 0.3s ease",
-      display: "none",
+      display: "block",
     },
   });
 
@@ -1538,9 +1538,9 @@ const initArrowNavigation = () => {
       SlideshowManager.nextSlide();
     },
     style: {
-      opacity: "0",
+      opacity: "1",
       transition: "opacity 0.3s ease",
-      display: "none",
+      display: "block",
     },
   });
 

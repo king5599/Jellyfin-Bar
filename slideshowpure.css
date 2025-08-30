@@ -152,6 +152,12 @@
   pointer-events: none;
 }
 
+#slides-container .arrow,
+#slides-container .dots-container,
+#slides-container .dots-container .dot {
+  pointer-events: auto !important;
+}
+
 .arrow {
   position: absolute;
   top: 50%;
@@ -164,6 +170,7 @@
   justify-content: center;
   align-items: center;
   -webkit-tap-highlight-color: #fff0;
+  pointer-events: auto !important;
 }
 
 .left-arrow {
@@ -187,6 +194,7 @@
   width: auto;
   height: auto;
   transition: opacity 0.3s ease-in-out;
+  pointer-events: auto !important;
 }
 
 .dot {
@@ -199,6 +207,8 @@
   transform-origin: center;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.5s ease-in-out;
+  cursor: pointer;
+  pointer-events: auto !important;
 }
 
 .dot.active {
@@ -221,10 +231,6 @@
   opacity: 1;
   z-index: 1;
   pointer-events: auto;
-}
-
-.arrow {
-  pointer-events: auto !important;
 }
 
 .backdrop-container {
