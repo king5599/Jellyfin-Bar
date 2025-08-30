@@ -16,33 +16,25 @@
 
 ---
 
-## 使用方法
+
+## **首页轮播图设置方法**
 
 1. 下载本项目的 `index.html` 文件到本地目录。
 2. 替换 Jellyfin 的 web 目录下的 `index.html` 文件。
-   - Docker 用户可通过挂载本地目录实现：
-     ```shell
-     docker run -d \
-       -v /你的本地目录/index.html:/jellyfin/jellyfin-web/index.html \
-       ...其它参数...
-       jellyfin/jellyfin
-     ```
-3. 强制刷新浏览器页面（Ctrl+Shift+R）两次。
+3. 
 
+Docker 用户可通过挂载本地目录实现：
+
+```bash
+
+  ##添加一条目录映射
+  -v /你的本地目录/index.html:/jellyfin/jellyfin-web/index.html ##前边为本地index下载路径，后边为固定覆盖路径
+```
+
+⚠️⚠️非docker用户 需要找到 /jellyfin-web/index.html 这个文件进行替换（可能会有区别，没有测试过非docker用户的路径，需要自行查找）
+
+3.强制刷新浏览器页面（Ctrl+Shift+R）两次。
 ---
-
-## 自定义展示列表
-！！未找到avatars，没有验证是否可行，目前只能随机
-1. 在 `avatars` 文件夹下新建 `list.txt` 文件。
-2. 第一行为列表名称。
-3. 第二行起每行一个条目ID。例如：
-   ```
-   我的片单
-   ItemID1
-   ItemID2
-   ItemID3
-   ```
-4. 保存后刷新页面即可生效。
 
 ---
 
