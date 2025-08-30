@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>测试点击功能</title>
+    <style>
+        .test-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: #222;
+            pointer-events: none;
+        }
+        
+        .test-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.8);
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 10;
+            pointer-events: auto !important;
+        }
+        
+        .test-left {
+            left: 20px;
+        }
+        
+        .test-right {
+            right: 20px;
+        }
+        
+        .test-dots {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+            pointer-events: auto !important;
+        }
+        
+        .test-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            pointer-events: auto !important;
+        }
+        
+        .test-dot.active {
+            background: white;
+        }
+        
+        .test-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-family: Arial, sans-serif;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-info">
+            <h2>点击测试页面</h2>
+            <p>当前图片: <span id="current">1</span></p>
+            <p>总共: 5 张图片</p>
+        </div>
+        
+        <div class="test-arrow test-left" onclick="prevImage()">◀</div>
+        <div class="test-arrow test-right" onclick="nextImage()">▶</div>
+        
+        <div class="test-dots">
+            <div class="test-dot active" onclick="goToImage(0)"></div>
+            <div class="test-dot" onclick="goToImage(1)"></div>
+            <div class="test-dot" onclick="goToImage(2)"></div>
+            <div class="test-dot" onclick="goToImage(3)"></div>
+            <div class="test-dot" onclick="goToImage(4)"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const totalImages = 5;
+        
+        function updateDisplay() {
+            document.getElementById('current').textContent = currentIndex + 1;
+            
+            // 更新圆点
+            const dots = document.querySelectorAll('.test-dot');
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        function nextImage() {
+            console.log('下一张被点击');
+            currentIndex = (currentIndex + 1) % totalImages;
+            updateDisplay();
+        }
+        
+        function prevImage() {
+            console.log('上一张被点击');
+            currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+            updateDisplay();
+        }
+        
+        function goToImage(index) {
+            console.log('圆点被点击，目标:', index);
+            currentIndex = index;
+            updateDisplay();
+        }
+        
+        // 测试控制台输出
+        console.log('测试页面已加载');
+    </script>
+</body>
+</html>

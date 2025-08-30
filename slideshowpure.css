@@ -152,10 +152,18 @@
   pointer-events: none;
 }
 
+/* 确保交互元素可以点击 */
 #slides-container .arrow,
 #slides-container .dots-container,
-#slides-container .dots-container .dot {
+#slides-container .dots-container .dot,
+#slides-container .slide.active {
   pointer-events: auto !important;
+}
+
+/* 确保箭头和圆点在最上层 */
+.arrow,
+.dots-container {
+  z-index: 1000 !important;
 }
 
 .arrow {
@@ -171,6 +179,16 @@
   align-items: center;
   -webkit-tap-highlight-color: #fff0;
   pointer-events: auto !important;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.arrow:hover {
+  background: rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .left-arrow {

@@ -1165,6 +1165,7 @@ const SlideshowManager = {
       dot.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
+        console.log(`圆点 ${i} 被点击`);
         // 计算目标slide索引
         const totalItems = STATE.slideshow.totalItems;
         const numDots = 5;
@@ -1175,6 +1176,7 @@ const SlideshowManager = {
           // 均匀分布
           targetIndex = Math.round(i * (totalItems - 1) / (numDots - 1));
         }
+        console.log(`切换到索引: ${targetIndex}`);
         SlideshowManager.updateCurrentSlide(targetIndex);
       });
       dotsContainer.appendChild(dot);
@@ -1512,36 +1514,35 @@ const SlideshowManager = {
 const initArrowNavigation = () => {
   const container = SlideUtils.getOrCreateSlidesContainer();
 
-  const leftArrow = SlideUtils.createElement("div", {
-    className: "arrow left-arrow",
-    innerHTML: '<i class="material-icons">chevron_left</i>',
-    tabIndex: "0",
-    onclick: (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      SlideshowManager.prevSlide();
-    },
-    style: {
-      opacity: "1",
-      transition: "opacity 0.3s ease",
-      display: "block",
-    },
+  const leftArrow = document.createElement("div");
+  leftArrow.className = "arrow left-arrow";
+  leftArrow.innerHTML = '<i class="material-icons">chevron_left</i>';
+  leftArrow.tabIndex = 0;
+  leftArrow.style.opacity = "1";
+  leftArrow.style.transition = "opacity 0.3s ease";
+  leftArrow.style.display = "block";
+
+  const rightArrow = document.createElement("div");
+  rightArrow.className = "arrow right-arrow";
+  rightArrow.innerHTML = '<i class="material-icons">chevron_right</i>';
+  rightArrow.tabIndex = 0;
+  rightArrow.style.opacity = "1";
+  rightArrow.style.transition = "opacity 0.3s ease";
+  rightArrow.style.display = "block";
+
+  // 使用传统事件绑定方式
+  leftArrow.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("左箭头被点击");
+    SlideshowManager.prevSlide();
   });
 
-  const rightArrow = SlideUtils.createElement("div", {
-    className: "arrow right-arrow",
-    innerHTML: '<i class="material-icons">chevron_right</i>',
-    tabIndex: "0",
-    onclick: (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      SlideshowManager.nextSlide();
-    },
-    style: {
-      opacity: "1",
-      transition: "opacity 0.3s ease",
-      display: "block",
-    },
+  rightArrow.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("右箭头被点击");
+    SlideshowManager.nextSlide();
   });
 
   container.appendChild(leftArrow);
